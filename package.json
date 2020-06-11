@@ -1,21 +1,21 @@
 {
-    "name": "karas-bot",
-    "version": "1.0.0",
-    "description": "A bot for all your karas needs",
-    "main": "bot.js",
-    "author": "Joshua Ji",
-    "dependencies": {
-        "discord.js": "^12.2.0",
-        "dotenv": "^8.2.0",
-        "mongoose": "^5.9.18",
-        "winston": "^3.2.1"
-    },
-    "scripts": {
-        "start": "node bot.js",
-        "dev": "nodemon bot.js"
-    },
-    "license": "ISC",
-    "devDependencies": {
-        "nodemon": "^2.0.4"
-    }
+  "name": "karas-bot",
+  "version": "1.0.0",
+  "description": "A bot for all your karas needs",
+  "main": "bot.js",
+  "author": "Joshua Ji",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.9.18",
+    "winston": "^3.2.1"
+  },
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "nodemon bot.js"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
 }

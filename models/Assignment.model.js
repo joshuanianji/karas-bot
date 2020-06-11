@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const assignmentSchema = mongoose.Schema({
-  deadline: Date
+  deadline: Date,
+  course: String,
+  name: String,
 });
 
-module.exports = mongoose.model('Assignment', assignmentSchema);
+module.exports = mongoose.model("Assignment", assignmentSchema);
