@@ -7,10 +7,15 @@
     "dependencies": {
         "discord.js": "^12.2.0",
         "dotenv": "^8.2.0",
+        "mongoose": "^5.9.18",
         "winston": "^3.2.1"
     },
     "scripts": {
-        "start": "node bot.js"
+        "start": "node bot.js",
+        "dev": "nodemon bot.js"
     },
-    "license": "ISC"
+    "license": "ISC",
+    "devDependencies": {
+        "nodemon": "^2.0.4"
+    }
 }
