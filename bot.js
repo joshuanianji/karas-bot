@@ -1,6 +1,12 @@
+require('dotenv').config();
+const assert = require('assert')
 const Discord = require('discord.js');
 // This is an example of 
-const { prefix, token } = require('./config.json');
+const config = require('./config.json');
+const token = process.env.TOKEN || config.token;
+assert(token, 'You must configure the bot with a token!');
+
+const prefix = process.env.PREFIX || config.prefix || ';';
 
 const client = new Discord.Client();
 

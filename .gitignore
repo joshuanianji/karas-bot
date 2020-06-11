@@ -1,9 +1,6 @@
 # the 2 million javascript things i have to download ree
-
-/node_modules/
+node_modules/
 
 # hide sensitive info
 config.json
-
-# i don't think I need this
-package-lock.json
+.env
