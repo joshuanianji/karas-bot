@@ -1,6 +1,6 @@
 # the 2 million javascript things i have to download ree
 
-node-modules/
+/node_modules/
 
 # hide sensitive info
 config.json
