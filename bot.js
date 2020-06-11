@@ -1,8 +1,9 @@
 require('dotenv').config();
-const assert = require('assert')
+const assert = require('assert');
+const fs = require('fs')
 const Discord = require('discord.js');
-// This is an example of 
-const config = require('./config.json');
+
+const config = fs.existsSync('./config.json') ? require('./config.json') : {};
 const token = process.env.TOKEN || config.token;
 assert(token, 'You must configure the bot with a token!');
 
