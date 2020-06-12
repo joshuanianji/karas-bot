@@ -11,7 +11,7 @@ module.exports = {
       const { course, name } = /-c\s+"(?<course>.+?)"\s+(?<name>.+)/.exec(
         message.content
       ).groups;
-      console.log(course, name);
+
       await new Assignment({ course, name }).save();
       return message.channel.send(
         "Alright, I've just updated the stream with a new assignment."

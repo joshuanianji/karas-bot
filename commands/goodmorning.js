@@ -1,5 +1,11 @@
+const Discord = require('discord.js')
+
 module.exports = {
-  run(bot, message) {
+  /**
+   * @param {Discord.Client} bot 
+   * @param {Discord.Message} message 
+   */
+  run(client, message) {
     message.channel.send('Good morning Computer Science Students');
   }
 };
