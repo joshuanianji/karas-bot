@@ -64,23 +64,18 @@ client.on('guildMemberAdd', async (member) => {
   const karasImg = 'https://i.imgur.com/slphnBI.jpg';
   const osacsLogo = 'https://i.imgur.com/S4inqe1.png';
 
-  member.createDM()
-    .then((DMCHannel) => {
-      embedMsg = new Discord.MessageEmbed()
-        .setTitle(`OSACS Discord`)
-        .setURL('https://discord.gg/j6uRkC')
-        .setDescription(`We're glad you decided to join us in your programming journey, ${member.user.username}.`)
-        .setThumbnail(osacsLogo)
-
-      DMCHannel.send(embedMsg);
-      DMCHannel.send(`Welcome to the OSACS Discord, ${member.user.username}!`);
-      DMCHannel.send("To start off, **Please read and respect the rules written in `#README` channel**. If you have any questions, feel free to message anyone with the `exec` role. Failing to follow the rules can result in a ban - or even a harsh word from me!");
-      DMCHannel.send("A bit about me: I am an omnipotent deity: the digital incarnation of Mr. Karas, the Computer Science teacher at OSA. I'm still a work in progress, and if you have any suggestions for things I can do, we would **love** to hear your thoughts in the `#suggestions` channel. And if you want to make your own Discord bot, we'd love to add it to our server! There is an `OSACS Certified Bots` role just for this kind of thing. Happy coding!");
-
-      console.log(`Successfully sent welcome message to: ${member.user.username}`)
-    })
-    .catch((error) =>
-      console.log(`Error sending message to ${member.user.username}! `, error))
-})
+  const dmChannel = await member.createDM();
+  const embedMsg = new Discord.MessageEmbed()
+    .setTitle('OSACS Discord')
+    .setAuthor('KarasBot', karasImg)
+    .setURL('https://discord.gg/gzZyjdj')
+    .setDescription(`We're glad you decided to join us in your programming journey, ${member.user.username}`)
+    .setThumbnail(osacsLogo);
+  await dmChannel.send(embedMsg);
+  await dmChannel.send(`Welcome to the OSACS Discord, ${member.user.username}!`);
+  await dmChannel.send('To start off, **please read and respect the rules written in the `#README` channel**. If you have any questions, feel free to message anyone with the `@exec` role. Failing to follow the rules can result in a ban - or even a harsh word from me!');
+  await dmChannel.send('A bit about me: I am an omnipotent deity: the digital incarnation of Mr. Karas, the Computer Science teacher at OSA. I\'m still a work in progress, and if you have any suggestions for things I can do, we would **love** to hear your thoughts in the `#suggestions` channel! Also, if you want to make your own Discord bot, we\'d love to add it to our server! There is an `OSACS Certified Bots` role just for that kind of thing. Happy coding!');
+  console.log(`Successfully sent welcome message to: ${member.user.username}`);
+});
 
 client.login(token);
