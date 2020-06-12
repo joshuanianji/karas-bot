@@ -3,6 +3,8 @@ const assert = require('assert');
 const fs = require('fs');
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
+const yargs = require('yargs-parser');
+
 const config = fs.existsSync('./config.json') ? require('./config.json') : {};
 const token = process.env.TOKEN || config.token;
 assert(token, 'You must configure the bot with a token!');
@@ -48,15 +50,14 @@ client.on('message', (message) => {
   // we use prefix.length because we might change the prefix (located in config.json)
   // into something else
   // Then, we split it based on whitespace characters using a regular expression
-  const args = message.content.slice(prefix.length).split(/\s+/);
-
+  const args = yargs(message.content.slice(prefix.length));
+  
   // Array.prototype.shift() pops off the first element of the array and returns it.
   // String.prototype.toLowerCase() makes the string all lowercase.
-  const command = args.shift().toLowerCase();
+  const command = args._.shift().toLowerCase();
   if (!client.commands.has(command)) return;
   client.commands.get(command).run(client, message, args);
 });
-
 
 // sends a DM to a user when they join the server
 client.on('guildMemberAdd', async (member) => {
