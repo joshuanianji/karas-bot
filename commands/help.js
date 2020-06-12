@@ -11,8 +11,37 @@ module.exports = {
         name: cmd.name,
         value: cmd.description,
       })));
-      message.channel.send(embed);
+      return message.channel.send(embed);
     }
-    message.channel.send('Stop playing around with the bot and go code.');
+    
+    const cmdName = args._.shift().toLowerCase();
+    if (client.commands.has(cmdName)) {
+      const cmd = client.commands.get(cmdName);
+      const embed = new MessageEmbed();
+
+      if (args._.length > 0) {
+        const subcommandName = args._.shift().toLowerCase();
+        if (cmd.subcommands && cmd.subcommands.has(subcommandName)) {
+          const subcommand = cmd.subcommands.get(subcommandName);
+          embed
+            .setTitle(subcommandName)
+            .setDescription(subcommand.description)
+            .addField('Usage', subcommand.usage);
+          return message.channel.send(embed);
+        }
+      }
+
+      embed
+        .setTitle(cmdName)
+        .setDescription(cmd.description)
+        .addField('Usage', cmd.usage);
+      if (cmd.subcommands) embed.addFields(cmd.subcommands.map((subcmd) => ({
+        name: subcmd.name,
+        value: subcmd.description,
+      })));
+      message.channel.send(embed);
+    } else {
+      message.channel.send('Are you sure you\'re typing that correctly?');
+    }
   }
 };

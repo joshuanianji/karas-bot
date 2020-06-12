@@ -1,3 +1,4 @@
+const { Collection } = require('discord.js');
 const Assignment = require('../../models/Assignment.model');
 const addCommand = require('./add');
 const updateCommand = require('./update');
@@ -8,6 +9,10 @@ module.exports = {
   name: 'assignment',
   usage: '__assignment__',
   description: 'Need some help with your assignments? List \'em out first! If you need extra help just let me know.',
+  subcommands: new Collection([
+    ['add', addCommand],
+    ['update', updateCommand]
+  ]),
   async run(client, message, args) {
     if (args._[0] === 'add') return addCommand.run(client, message, {...args, _: args._.slice(1)});
     if (args._[0] === 'update') return updateCommand.run(client, message, {...args, _: args._.slice(1)});

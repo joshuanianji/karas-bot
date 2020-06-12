@@ -2,6 +2,9 @@ const Assignment = require('../../models/Assignment.model');
 
 // Submodule of `assignment` command
 module.exports = {
+  name: 'assignment add',
+  usage: 'assignment add -d <deadline> -c "<class_name>" <assignment_name>',
+  description: 'Time to add some new assignments!',
   async run(client, message, args) {
     if (!message.member.hasPermission('MANAGE_GUILD'))
       return message.channel.send(
