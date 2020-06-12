@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const assignmentSchema = mongoose.Schema({
   deadline: Date,
@@ -6,4 +6,4 @@ const assignmentSchema = mongoose.Schema({
   name: String,
 });
 
-module.exports = mongoose.model("Assignment", assignmentSchema);
+module.exports = mongoose.model('Assignment', assignmentSchema);

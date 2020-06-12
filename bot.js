@@ -1,7 +1,8 @@
 require('dotenv').config();
 const assert = require('assert');
-const fs = require('fs')
+const fs = require('fs');
 const Discord = require('discord.js');
+const mongoose = require('mongoose');
 const config = fs.existsSync('./config.json') ? require('./config.json') : {};
 const token = process.env.TOKEN || config.token;
 assert(token, 'You must configure the bot with a token!');
@@ -17,12 +18,22 @@ client.commands = new Discord.Collection();
 // Don't worry if this seems confusing — treating functions as first-class objects can be a tricky concept! We'll talk about it in one of our meetings.
 client.once('ready', () => {
   fs.readdir('./commands', (err, files) => {
-    files.forEach((command) => {
-      console.log(command);
-      const cmdName = command.slice(0, command.lastIndexOf('.'));
-      client.commands.set(cmdName, require(`./commands/${command}`));
-    });
-    console.log('Ready!');
+    files
+      .filter(file => file.endsWith('.js') || fs.existsSync(`./commands/${file}/index.js`))
+      .forEach((file) => {
+        const cmdName = file.endsWith('.js') ? file.slice(0, -3) : file;
+        client.commands.set(cmdName, require(`./commands/${file}`));
+      });
+    console.log(client.commands);
+
+  });
+
+  mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+    if (err) {
+      console.log('Error connecting to the database: ', err);
+      process.exit(1);
+    }
+    console.log('connected to the database!');
   });
 });
 
@@ -47,6 +58,8 @@ client.on('message', (message) => {
   client.commands.get(command).run(client, message, args);
 });
 
+
+// sends a DM to a user when they join the server
 client.on('guildMemberAdd', (member) => {
   const karasImg = 'https://i.imgur.com/slphnBI.jpg';
   const osacsLogo = 'https://i.imgur.com/S4inqe1.png';
