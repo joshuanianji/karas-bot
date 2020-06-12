@@ -3,6 +3,8 @@ const assert = require('assert');
 const fs = require('fs');
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
+const yargs = require('yargs-parser');
+
 const config = fs.existsSync('./config.json') ? require('./config.json') : {};
 const token = process.env.TOKEN || config.token;
 assert(token, 'You must configure the bot with a token!');
@@ -24,8 +26,7 @@ client.once('ready', () => {
         const cmdName = file.endsWith('.js') ? file.slice(0, -3) : file;
         client.commands.set(cmdName, require(`./commands/${file}`));
       });
-    console.log(client.commands);
-
+    console.log('loaded these commands:', client.commands.keyArray().join(', '));
   });
 
   mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
@@ -49,18 +50,17 @@ client.on('message', (message) => {
   // we use prefix.length because we might change the prefix (located in config.json)
   // into something else
   // Then, we split it based on whitespace characters using a regular expression
-  const args = message.content.slice(prefix.length).split(/\s+/);
+  const args = yargs(message.content.slice(prefix.length));
 
   // Array.prototype.shift() pops off the first element of the array and returns it.
   // String.prototype.toLowerCase() makes the string all lowercase.
-  const command = args.shift().toLowerCase();
+  const command = args._.shift().toLowerCase();
   if (!client.commands.has(command)) return;
   client.commands.get(command).run(client, message, args);
 });
 
-
 // sends a DM to a user when they join the server
-client.on('guildMemberAdd', (member) => {
+client.on('guildMemberAdd', async (member) => {
   const karasImg = 'https://i.imgur.com/slphnBI.jpg';
   const osacsLogo = 'https://i.imgur.com/S4inqe1.png';
 
@@ -72,12 +72,12 @@ client.on('guildMemberAdd', (member) => {
         .setDescription(`We're glad you decided to join us in your programming journey, ${member.user.username}`)
         .setThumbnail(osacsLogo)
 
-      DMCHannel.send(embedMsg)
-      DMCHannel.send("**Please read and respect the rules written in `#README` channel**, and if you have any questions, feel free to message anyone with the `exec` role. Failing to follow the rules can result in a ban - or even a harsh word from me!")
-      DMCHannel.send("I am an omnipotent deity: the digital incarnation of Mr. Karas, the Computer Science teacher at OSA. I'm still a work in progress, and if you have any suggestions for things I can do, we would **love** to hear your thoughts in the `#suggestions` channel. And if you want to make your own Discord bot, we'd love that as well! There is an `OSACS Certified Bots` role just for this kind of thing. Happy coding!")
+      DMCHannel.send(embedMsg);
+      DMCHannel.send("**Please read and respect the rules written in `#README` channel**, and if you have any questions, feel free to message anyone with the `exec` role. Failing to follow the rules can result in a ban - or even a harsh word from me!");
+      DMCHannel.send("I am an omnipotent deity: the digital incarnation of Mr. Karas, the Computer Science teacher at OSA. I'm still a work in progress, and if you have any suggestions for things I can do, we would **love** to hear your thoughts in the `#suggestions` channel. And if you want to make your own Discord bot, we'd love that as well! There is an `OSACS Certified Bots` role just for this kind of thing. Happy coding!");
+
+      console.log(`Successfully sent welcome message to: ${member.user.username}`)
     })
-    .then(message =>
-      console.log(`Successfully sent welcome message to: ${member.user.username}`))
     .catch((error) =>
       console.log(`Error sending message to ${member.user.username}! `, error))
 })

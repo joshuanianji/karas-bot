@@ -5,13 +5,12 @@ const updateCommand = require('./update');
 const fmtDate = (d) => `${d.toLocaleString('default', { month: 'short'})} ${d.getDate()}, ${d.getFullYear()}`;
 
 module.exports = {
-  usage: 'assignment',
-  help: 'Show a list of your assignments',
+  name: 'assignment',
+  usage: '__assignment__',
+  description: 'Need some help with your assignments? List \'em out first! If you need extra help just let me know.',
   async run(client, message, args) {
-    if (args[0] === 'add') return addCommand.run(client, message, args);
-    if (args[0] === 'update') return updateCommand.run(client, message, args);
-
-    console.log('assignments');
+    if (args._[0] === 'add') return addCommand.run(client, message, {...args, _: args._.slice(1)});
+    if (args._[0] === 'update') return updateCommand.run(client, message, {...args, _: args._.slice(1)});
 
     const role = message.member.roles.cache.find(role =>role.name.startsWith('CS'));
 
@@ -23,8 +22,6 @@ module.exports = {
     const assignments = await Assignment.find({ course: role.name })
       .lean()
       .exec();
-
-    console.log(assignments);
 
     message.channel.send(
       `Here's a list of your assignments:\n${assignments
