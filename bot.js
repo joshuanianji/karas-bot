@@ -69,7 +69,7 @@ client.on('guildMemberAdd', async (member) => {
       embedMsg = new Discord.MessageEmbed()
         .setTitle(`OSACS Discord`)
         .setURL('https://discord.gg/j6uRkC')
-        .setDescription(`We're glad you decided to join us in your programming journey, ${member.user.username}!`)
+        .setDescription(`We're glad you decided to join us in your programming journey, ${member.user.username}.`)
         .setThumbnail(osacsLogo)
 
       DMCHannel.send(embedMsg);
