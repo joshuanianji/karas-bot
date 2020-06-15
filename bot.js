@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const yargs = require('yargs-parser');
 
 const config = fs.existsSync('./config.json') ? require('./config.json') : {};
-const token = process.env.TOKEN || config.token;
+const token = process.env.BOT_TOKEN || config.token;
 assert(token, 'You must configure the bot with a token!');
 
 const prefix = process.env.PREFIX || config.prefix || ';';
@@ -50,11 +50,10 @@ client.on('message', (message) => {
   // we use prefix.length because we might change the prefix (located in config.json)
   // into something else
   // Then, we split it based on whitespace characters using a regular expression
-  const args = yargs(message.content.slice(prefix.length));
-
-  // Array.prototype.shift() pops off the first element of the array and returns it.
-  // String.prototype.toLowerCase() makes the string all lowercase.
-  const command = args._.shift().toLowerCase();
+  let args = message.content.slice(prefix.length).split(/\s+/);
+  const command = args.shift().toLowerCase();
+  args = yargs(args.join(' '));
+  
   if (!client.commands.has(command)) return;
   client.commands.get(command).run(client, message, args);
 });
