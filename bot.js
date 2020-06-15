@@ -43,7 +43,7 @@ client.on('message', (message) => {
   // if the message does not start with a ";" 
   // or if the message was sent by the bot
   // we ignore it
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  if (!message.content.startsWith(prefix) || message.author.bot || message.content.length <= prefix.length) return;
 
   // gets everything after the prefix and splits off everything else into spaces
   //e .g. ;help one two => ["help", "one", "two"]
