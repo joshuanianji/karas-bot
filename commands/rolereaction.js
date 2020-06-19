@@ -11,7 +11,13 @@ module.exports = {
   async run(client, message, args) {
     if (args._.length < 1) return message.channel.send(`Here's how to use this command: ${this.usage}`);
 
-    const reactionMsg = await message.channel.messages.fetch(args._[0]);
+    let reactionMsg = await Promise.all(message.guild.channels.cache
+      .filter(channel => channel.type === 'text')
+      .map(async (channel) => {
+        const msgs = await channel.messages.fetch();
+        return msgs.find(msg => msg.id === args._[0]);
+      }));
+    reactionMsg = reactionMsg.find(val => !!val);
     if (!reactionMsg) return message.channel.send('Hmm, I couldn\'t find that message. Make sure the ID is correct.');
 
     const numRoles = parseInt(args._[1]) || 1;
